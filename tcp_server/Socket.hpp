@@ -11,6 +11,7 @@ class Socket {
 
         bool bind(int port);
         void listen();
+        int accept();
 
     private:
         int socket_fd;

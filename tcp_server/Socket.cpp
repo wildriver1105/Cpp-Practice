@@ -7,6 +7,11 @@ Socket::Socket() {
     if (socket_fd == -1) {
         std::cerr << "Failed to create socket" << std::endl;
     }
+
+    int opt = 1;
+    if (setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) == -1) {
+        perror("setsockopt failed");
+    }
 }
 
 Socket::~Socket() {
@@ -30,4 +35,18 @@ bool Socket::bind(int port) {
 
 void Socket::listen() {
     ::listen(socket_fd, 5);
+}
+
+int Socket::accept() {
+    struct sockaddr_in client_addr{};
+    socklen_t client_len = sizeof(client_addr);
+
+    // New clinet socket file descriptor
+    int client_fd = ::accept(socket_fd, (struct sockaddr*)&client_addr, &client_len);
+
+    if (client_fd == -1) {
+        perror("Accept failed");
+
+        return client_fd;
+    }
 }
