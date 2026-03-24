@@ -13,7 +13,7 @@ int main(int argc, const char * argv[]) {
     Socket server;
 
     if (!server.bind(8080)) {
-        std::cerr << "Failed to bind socket to port 8080" << std::endl;
+        std::cerr << "Failed to bind socket to port 8080" << std::endl << strerror(errno);
         return 1;
     }
 

@@ -3,9 +3,10 @@
 #include <iostream>
 
 Socket::Socket() {
-    int socket_fd = socket(AF_INET, SOCK_STREAM, 0);
+    socket_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (socket_fd == -1) {
-        std::cerr << "Failed to create socket" << std::endl;
+        perror("Socket creation failed");
+        return;
     }
 
     int opt = 1;
@@ -15,9 +16,10 @@ Socket::Socket() {
 }
 
 Socket::~Socket() {
-    if (socket_fd != -1) {
-        close(socket_fd);
+    if (socket_fd > 0) {
         std::cerr << "Socket " << socket_fd << " is being closed" << std::endl;
+        close(socket_fd);
+        socket_fd = -1;
     }
 }
 
@@ -46,7 +48,7 @@ int Socket::accept() {
 
     if (client_fd == -1) {
         perror("Accept failed");
-
-        return client_fd;
     }
+
+    return client_fd;
 }
