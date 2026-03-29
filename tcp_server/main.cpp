@@ -37,7 +37,7 @@ int main(int argc, const char * argv[]) {
             std::string method = req.getMethod();
             std::string path = req.getPath();
 
-            std::cout << "[요청 발ㅇ] Method: " << method << ", Path: " << path << std::endl;
+            std::cout << "[요청 발생] Method: " << method << ", Path: " << path << std::endl;
 
             std::string response_body;
 

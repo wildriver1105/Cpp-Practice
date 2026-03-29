@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/Users/hyunlee/Desktop/Lab/C++ Practice/tcp_server/HttpRequest.cpp" "CMakeFiles/server.dir/HttpRequest.cpp.o" "gcc" "CMakeFiles/server.dir/HttpRequest.cpp.o.d"
   "/Users/hyunlee/Desktop/Lab/C++ Practice/tcp_server/Socket.cpp" "CMakeFiles/server.dir/Socket.cpp.o" "gcc" "CMakeFiles/server.dir/Socket.cpp.o.d"
   "/Users/hyunlee/Desktop/Lab/C++ Practice/tcp_server/main.cpp" "CMakeFiles/server.dir/main.cpp.o" "gcc" "CMakeFiles/server.dir/main.cpp.o.d"
   )

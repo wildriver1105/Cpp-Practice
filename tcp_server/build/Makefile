@@ -129,6 +129,30 @@ server/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/build
 .PHONY : server/fast
 
+HttpRequest.o: HttpRequest.cpp.o
+.PHONY : HttpRequest.o
+
+# target to build an object file
+HttpRequest.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/HttpRequest.cpp.o
+.PHONY : HttpRequest.cpp.o
+
+HttpRequest.i: HttpRequest.cpp.i
+.PHONY : HttpRequest.i
+
+# target to preprocess a source file
+HttpRequest.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/HttpRequest.cpp.i
+.PHONY : HttpRequest.cpp.i
+
+HttpRequest.s: HttpRequest.cpp.s
+.PHONY : HttpRequest.s
+
+# target to generate assembly for a file
+HttpRequest.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/HttpRequest.cpp.s
+.PHONY : HttpRequest.cpp.s
+
 Socket.o: Socket.cpp.o
 .PHONY : Socket.o
 
@@ -186,6 +210,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... server"
+	@echo "... HttpRequest.o"
+	@echo "... HttpRequest.i"
+	@echo "... HttpRequest.s"
 	@echo "... Socket.o"
 	@echo "... Socket.i"
 	@echo "... Socket.s"

@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/server.dir/HttpRequest.cpp.o"
+  "CMakeFiles/server.dir/HttpRequest.cpp.o.d"
   "CMakeFiles/server.dir/Socket.cpp.o"
   "CMakeFiles/server.dir/Socket.cpp.o.d"
   "CMakeFiles/server.dir/main.cpp.o"
