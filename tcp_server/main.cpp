@@ -8,6 +8,7 @@
 #include <iostream>
 #include <unistd.h>
 #include "Socket.hpp"
+#include "HttpRequest.hpp"
 
 int main(int argc, const char * argv[]) {
     Socket server;
@@ -30,21 +31,35 @@ int main(int argc, const char * argv[]) {
         ssize_t bytes_read = read(client_fd, buffer, sizeof(buffer) - 1);
 
         if (bytes_read > 0) {
-            std::cout << "Message from client: " << buffer << std::endl;
+            HttpRequest req;
+            req.parse(buffer);
 
-            const char* response = 
+            std::string method = req.getMethod();
+            std::string path = req.getPath();
+
+            std::cout << "[요청 발ㅇ] Method: " << method << ", Path: " << path << std::endl;
+
+            std::string response_body;
+
+            if (path == "/") {
+                response_body = "<html><body><h1>C++ Server Online!</h1></body></html>";
+            } else if (path == "/hello") {
+                response_body = "<html><body><h1>Hello, World!</h1></body></html>";
+            } else {
+                response_body = "<html><body><h1>404 Not Found</h1></body></html>";
+            }
+
+            std::string response = 
                 "HTTP/1.1 200 OK\r\n"
                 "Content-Type: text/html; charset=UTF-8\r\n"
-                "Content-Length: 50\r\n"
+                "Content-Length: " + std::to_string(response_body.length()) + "\r\n"
                 "Connection: close\r\n"
-                "\r\n"
-                "<html><body><h1>C++ Server Online!</h1></body></html>";
+                "\r\n" + response_body;
 
-            write(client_fd, response, strlen(response));
+            write(client_fd, response.c_str(), response.length());
         }
 
         close(client_fd);
-        std::cout << "Client disconnected! fd: " << client_fd << std::endl;
     }
     
     return 0;

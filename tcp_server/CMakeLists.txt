@@ -13,4 +13,5 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(server 
     main.cpp 
     Socket.cpp
+    HttpRequest.cpp
 )
