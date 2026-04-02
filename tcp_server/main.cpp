@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include "Socket.hpp"
 #include "HttpRequest.hpp"
+#include "HttpResponse.hpp"
 
 int main(int argc, const char * argv[]) {
     Socket server;
@@ -45,18 +46,21 @@ int main(int argc, const char * argv[]) {
                 response_body = "<html><body><h1>C++ Server Online!</h1></body></html>";
             } else if (path == "/hello") {
                 response_body = "<html><body><h1>Hello, World!</h1></body></html>";
+            } else if (path == "/cto") {
+                response_body = "<h1>CTO's Vision</h1><p>The right spec is a balance of art and science.</p>";
             } else {
-                response_body = "<html><body><h1>404 Not Found</h1></body></html>";
+                response_body = "<h1>404 Not Found</h1>";
             }
 
-            std::string response = 
-                "HTTP/1.1 200 OK\r\n"
-                "Content-Type: text/html; charset=UTF-8\r\n"
-                "Content-Length: " + std::to_string(response_body.length()) + "\r\n"
-                "Connection: close\r\n"
-                "\r\n" + response_body;
+            HttpResponse res;
+            
+            res.setStatusCode(200);
+            res.setContentType("text/html");
+            res.setBody(response_body);
 
-            write(client_fd, response.c_str(), response.length());
+            // 최종 문자열 생성 및 전송
+            std::string raw_res = res.toString();
+            write(client_fd, raw_res.c_str(), raw_res.length());
         }
 
         close(client_fd);
