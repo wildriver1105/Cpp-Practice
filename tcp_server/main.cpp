@@ -11,60 +11,45 @@
 #include "HttpRequest.hpp"
 #include "HttpResponse.hpp"
 
-int main(int argc, const char * argv[]) {
+int main() {
     Socket server;
-
-    if (!server.bind(8080)) {
-        std::cerr << "Failed to bind socket to port 8080" << std::endl << strerror(errno);
-        return 1;
-    }
-
+    if (!server.bind(8080)) return 1;
     server.listen();
-    std::cout << "Socket bound to port 8080" << std::endl;
+
+    std::cout << "🚀 CTO's Engine starts on port 8080..." << std::endl;
 
     while (true) {
         int client_fd = server.accept();
         if (client_fd == -1) continue;
 
-        std::cout << "Client connected! fd: " << client_fd << std::endl;
-    
-        char buffer[1024] = {0};
+        char buffer[2048] = {0}; // 어제 배운 '고정 버퍼' 방식
         ssize_t bytes_read = read(client_fd, buffer, sizeof(buffer) - 1);
 
         if (bytes_read > 0) {
-            HttpRequest req;
-            req.parse(buffer);
+            // [1] 요청 해석 (L7 Parsing)
+            HttpRequest request;
+            request.parse(buffer);
 
-            std::string method = req.getMethod();
-            std::string path = req.getPath();
-
-            std::cout << "[요청 발생] Method: " << method << ", Path: " << path << std::endl;
-
-            std::string response_body;
+            // [2] 응답 객체 생성 및 로직 처리
+            HttpResponse response;
+            std::string path = request.getPath();
 
             if (path == "/") {
-                response_body = "<html><body><h1>C++ Server Online!</h1></body></html>";
-            } else if (path == "/hello") {
-                response_body = "<html><body><h1>Hello, World!</h1></body></html>";
-            } else if (path == "/cto") {
-                response_body = "<h1>CTO's Vision</h1><p>The right spec is a balance of art and science.</p>";
+                response.setStatusCode(200);
+                response.setBody("<h1>Ship's Log: Day 1</h1><p>System Layer: Online</p>");
+            } else if (path == "/status") {
+                response.setStatusCode(200);
+                response.setBody("<h1>System Status</h1><p>NMEA2000: Ready<p>GPS: Fixed</p>");
             } else {
-                response_body = "<h1>404 Not Found</h1>";
+                response.setStatusCode(404);
+                response.setBody("<h1>404: Port Not Found</h1>");
             }
 
-            HttpResponse res;
-            
-            res.setStatusCode(200);
-            res.setContentType("text/html");
-            res.setBody(response_body);
-
-            // 최종 문자열 생성 및 전송
-            std::string raw_res = res.toString();
-            write(client_fd, raw_res.c_str(), raw_res.length());
+            // [3] 최종 규격 조립 및 전송 (Serialization & Transmission)
+            std::string raw_response = response.toString();
+            write(client_fd, raw_response.c_str(), raw_response.length());
         }
-
         close(client_fd);
     }
-    
     return 0;
 }

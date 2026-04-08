@@ -24,5 +24,4 @@ std::string HttpResponse::toString() const {
     res += body_;
 
     return res;
-
 }
